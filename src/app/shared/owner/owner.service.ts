@@ -32,4 +32,8 @@ export class OwnerService {
   remove(href: string){
     return this.http.delete(href);
   }
+
+  getDni(dni: string) {
+    return this.http.get(this.API + "/owner?dni=" + dni);
+  }
 }
