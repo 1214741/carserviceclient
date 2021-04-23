@@ -6,7 +6,7 @@ import {OwnerEditComponent} from './owner-edit/owner-edit.component';
 import {OwnerListComponent} from './owner-list/owner-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/car-list', pathMatch: 'full' },
+  { path: '', redirectTo: '/owner-list', pathMatch: 'full' },
   {
     path: 'car-list',
     component: CarListComponent
