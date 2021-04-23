@@ -25,3 +25,15 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+Car list
+Se modificó este componente para que se muestre el nombre del carro y el nombre del owner a la vez.
+
+Car edit
+Permite editar la información del carro, y si se le pone un dni invalido, este lo notifica en la lista.
+
+Owner list
+Se crea este componente en donde se puede ver la informacion de todos los owners, y se pueden eliminar varios al tiempo.
+
+Owner edit
+Tiene el crud de los owners.
