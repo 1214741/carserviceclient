@@ -1,0 +1,15 @@
+a{
+    text-decoration: none;
+    color: azure;
+    margin: 20px;
+}
+a:hover, a:active {
+    color: lightblue;
+}
+.navigation-items{
+    list-style-type: none;
+    display: flex;
+}
+.end {
+    margin-left: auto;
+}

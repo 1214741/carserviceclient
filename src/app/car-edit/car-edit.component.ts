@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CarService } from '../shared/car/car.service';
+import { OwnerService } from '../shared/owner/owner.service';
 import { GiphyService } from '../shared/giphy/giphy.service';
 import { NgForm } from '@angular/forms';
 
@@ -12,16 +13,25 @@ import { NgForm } from '@angular/forms';
 })
 export class CarEditComponent implements OnInit, OnDestroy {
   car: any = {};
-
+  owners = [];
   sub: Subscription;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private carService: CarService,
-              private giphyService: GiphyService) {
+              private giphyService: GiphyService,
+              private ownerService: OwnerService) {
   }
 
   ngOnInit() {
+
+    this.ownerService.getAll().subscribe(data =>{
+      this.owners = data._embedded.owners;
+    }, err => {
+      console.log("No se puede conectar con el API")
+      this.gotoList();
+    })
+
     this.sub = this.route.params.subscribe(params => {
       const id = params['id'];
       if (id) {

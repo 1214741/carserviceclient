@@ -1,71 +1,56 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { OwnerService } from '../shared/owner/owner.service';
+import { GiphyService } from '../shared/giphy/giphy.service';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from "@angular/router";
-import { OwnerService } from "../shared/owner/owner.service";
-import { NgForm } from "@angular/forms";
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-owner-edit',
   templateUrl: './owner-edit.component.html',
   styleUrls: ['./owner-edit.component.css']
 })
-export class OwnerEditComponent implements OnInit, OnDestroy {
+export class OwnerEditComponent implements OnInit {
 
-  owner: any = {};
   sub: Subscription;
+  owner: any = {};
 
-  constructor(
-    private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,
     private router: Router,
-    private ownerService: OwnerService
-  ) { }
+    private ownerService: OwnerService,
+    private giphyService: GiphyService) { }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe((params) => {
-      const dni = params["dni"];
-      if (dni) {
-        this.ownerService.getDni(dni).subscribe((owner: any) => {
-          if (owner) {
-            console.log(owner)
-            this.owner = owner[0];
-            this.ownerService.get(owner[0].id).subscribe((ownerid: any) =>{
-              console.log(ownerid)
-              this.owner = ownerid;
-              this.owner.href = ownerid._links.self.href;
-            });
+    this.sub = this.route.params.subscribe(params => {
+      const id = params['id'];
+      console.log(params)
+      if (id) {
+        this.ownerService.getDni(id).subscribe(data => {
+          if (data._embedded.owners[0]) {
+            this.owner = data._embedded.owners[0];
+            this.owner.href = this.owner._links.self.href;
+            console.log(this.owner);
           } else {
-            console.log(`owner with dni '${dni}' not found, returning to list`);
+            console.log("No existe el Owner con el dni ingresado");
             this.gotoList();
           }
-        });
-      }
+        }, err => {
+          console.log("No se puede conectar con el API");
+          this.gotoList();
+        })
+      } 
     });
+
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
   gotoList() {
-    this.router.navigate(["/owner-list"]);
+    this.router.navigate(['/owner-list']);
   }
 
   save(form: NgForm) {
-    this.ownerService.save(form).subscribe(
-      (result) => {
-        this.gotoList();
-      },
-      (error) => console.error(error)
-    );
-  }
-
-  remove(href) {
-    this.ownerService.remove(href).subscribe(
-      (result) => {
-        this.gotoList();
-      },
-      (error) => console.error(error)
-    );
+    this.ownerService.saveOwner(form).subscribe(result => {
+      this.gotoList();
+    }, error => console.error(error));
   }
 
 }

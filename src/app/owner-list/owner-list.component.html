@@ -1,17 +1,16 @@
-<h1>Bienvenido!</h1>
-
 <mat-card>
     <mat-card-title>Owner List</mat-card-title>
     <mat-card-content>
-      <mat-list>
-        <mat-list-item *ngFor="let owner of owners">
+      <mat-selection-list #ownerList [(ngModel)] = "selected" (ngModelChange)="selectedItem($event)">
+        <mat-list-option *ngFor="let owner of owners" [value] = "owner">
+          <img mat-list-avatar src="{{owner.giphyUrl}}" alt="{{owner.name}}">
           <h3 mat-line>
             <a mat-button [routerLink]="['/owner-edit', owner.dni]">{{owner.name}}</a>
-            <!-- <a mat-button [routerLink]="['/car-edit', car.id]">{{car.name}}</a> -->
           </h3>
-        </mat-list-item>
-      </mat-list>
+          
+        </mat-list-option>
+      </mat-selection-list>
     </mat-card-content>
-  
     <button mat-fab color="primary" [routerLink]="['/owner-add']">Add</button>
+    <button mat-raised-button color="secondary" *ngIf="selected.length" type="button" (click)="remove()">Delete</button>
   </mat-card>
